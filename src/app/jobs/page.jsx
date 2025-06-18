@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/pagination";
 import { getAllJobs } from "@/redux/action/job";
 import { Filter } from "lucide-react";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
 
-const JobsPage = () => {
+const JobsPageContent = () => {
   const { loading, jobs, locations } = useSelector((state) => state.job);
   const [searchJobs, setSearchJobs] = useState(null);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -202,6 +202,14 @@ const JobsPage = () => {
         </DialogContent>
       </Dialog>
     </div>
+  );
+};
+
+const JobsPage = () => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <JobsPageContent />
+    </Suspense>
   );
 };
 
