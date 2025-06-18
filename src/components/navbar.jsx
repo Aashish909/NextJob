@@ -34,8 +34,8 @@ const Navbar = () => {
     e.preventDefault();
     if (search.trim()) {
       router.push(`/jobs?search=${encodeURIComponent(search)}`);
-      setSearch("");
-      setIsOpen(false); // close mobile menu if open
+      // setSearch("");
+      setIsOpen(false); 
     }
   };
 

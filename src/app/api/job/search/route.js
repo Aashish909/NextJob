@@ -12,7 +12,7 @@ export async function GET(req) {
       return NextResponse.json({ jobs: [] });
     }
 
-    // Find companies matching the query (for company name search)
+   
     const companies = await Company.find({
       name: { $regex: q, $options: "i" },
     }).select("_id");
