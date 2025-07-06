@@ -63,4 +63,4 @@ const schema = new mongoose.Schema(
 
 
 
-export const Company = mongoose.models.Company || mongoose.model("Company", schema);
+export const Job = mongoose.models.Job || mongoose.model("Job", schema);
