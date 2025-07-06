@@ -31,4 +31,6 @@ const schema = new mongoose.Schema(
   }
 );
 
-export const User = mongoose.models.User || mongoose.model("User", schema);
+mongoose.models = {};
+
+export const Application = mongoose.model("Application", schema);
