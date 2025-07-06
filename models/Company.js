@@ -34,6 +34,6 @@ const schema = new mongoose.Schema(
   }
 );
 
-mongoose.models = {};
+
 
 export const Company = mongoose.model("Company", schema);
