@@ -24,7 +24,7 @@ export async function GET(req) {
       );
 
     const id = searchParams.get("id");
-    const job = await Job.findById(id);
+    const job = await Job.findById(id).populate('company');
 
     return NextResponse.json(job);
   } catch (error) {

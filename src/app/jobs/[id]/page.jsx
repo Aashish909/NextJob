@@ -34,6 +34,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import AIToolsPanel from "@/components/AIToolsPanel";
 
 const JobPage = () => {
   const { id } = useParams();
@@ -46,8 +47,6 @@ const JobPage = () => {
   const { job, loading, btnLoading, applications, applicationOfJob } =
     useSelector((state) => state.job);
   const { user, isAuth } = useSelector((state) => state.user);
-
-  if (!isAuth) return redirect("/login");
 
   const [saved, setsaved] = useState(false);
 
@@ -129,6 +128,9 @@ const JobPage = () => {
 
     dispatch(updateStatus(Appid, id, value, setvalue));
   };
+
+  if (!isAuth) return redirect("/login");
+
   return (
     <div className="container">
       {loading ? (
@@ -138,6 +140,43 @@ const JobPage = () => {
           {job && (
             <div className="w-[90%] md:w-2/3 container mx-auto flex px-5 py-24 md:flex-row flex-col">
               <div className=" m-auto mb-10 md:mb-0">
+                {/* Company Logo and Info */}
+                <div className="flex items-center gap-6 mb-8 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white border border-gray-200 flex items-center justify-center shadow-md">
+                    {(job.company?.logo || job.comapnyLogo) ? (
+                      <img
+                        src={job.company?.logo || job.comapnyLogo}
+                        alt={`${job.company?.name || 'Company'} logo`}
+                        className="max-w-[70%] max-h-[70%] object-contain"
+                        style={{ display: 'block' }}
+                        onError={e => {
+                          e.target.style.display = 'none';
+                          e.target.nextSibling.style.display = 'flex';
+                        }}
+                      />
+                    ) : null}
+                    <div className="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-2xl hidden">
+                      {job.company?.name?.charAt(0)?.toUpperCase() || 'C'}
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                      {job.company?.name || 'Company Name'}
+                    </h2>
+                    {job.company?.location && (
+                      <p className="text-gray-600 text-base flex items-center gap-1">
+                        <MapPin className="w-4 h-4" />
+                        {job.company.location}
+                      </p>
+                    )}
+                    {job.company?.website && (
+                      <p className="text-blue-600 text-sm mt-1">
+                        🌐 {job.company.website}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
                 <h1 className="sm:text-4xl text-3xl mb-4 font-medium">
                   {job.title}
                 </h1>
@@ -199,12 +238,19 @@ const JobPage = () => {
                             onClick={applyHandler}
                             disabled={btnLoading}
                           >
-                            Easy Apply
+                            Apply Now
                           </Button>
                         )}
                       </>
                     )}
                   </>
+                )}
+
+                {/* AI Tools Panel for Job Seekers */}
+                {user && user.role === "jobseeker" && (
+                  <div className="mt-8">
+                    <AIToolsPanel jobId={id} job={job} />
+                  </div>
                 )}
               </div>
             </div>

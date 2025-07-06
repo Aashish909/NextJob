@@ -24,6 +24,21 @@ import {
   skillremoveSuccess,
   updateFail,
   updateSuccess,
+  aiFeedbackStart,
+  aiFeedbackSuccess,
+  aiFeedbackFail,
+  aiResumeJDMatchingStart,
+  aiResumeJDMatchingSuccess,
+  aiResumeJDMatchingFail,
+  aiJobSummaryStart,
+  aiJobSummarySuccess,
+  aiJobSummaryFail,
+  aiCoverLetterStart,
+  aiCoverLetterSuccess,
+  aiCoverLetterFail,
+  aiInterviewPrepStart,
+  aiInterviewPrepSuccess,
+  aiInterviewPrepFail,
 } from "../reducer/userReducer";
 import Cookies from "js-cookie";
 import { getAllCompany } from "./company";
@@ -191,5 +206,75 @@ export const getUserProfile = (id) => async (dispatch) => {
     dispatch(getUserProfileSucces(data));
   } catch (error) {
     dispatch(getUserProfileFail(error.response.data.message));
+  }
+};
+
+export const getAIResumeFeedback = () => async (dispatch) => {
+  try {
+    dispatch(aiFeedbackStart());
+
+    const { data } = await axios.post(
+      "/api/ai/resume-feedback?token=" + Cookies.get("token")
+    );
+
+    dispatch(aiFeedbackSuccess(data));
+  } catch (error) {
+    dispatch(aiFeedbackFail(error.response?.data?.message || "Failed to get AI feedback"));
+  }
+};
+
+export const getAIResumeJDMatching = (jobId) => async (dispatch) => {
+  try {
+    dispatch(aiResumeJDMatchingStart());
+
+    const { data } = await axios.post(
+      `/api/ai/resume-jd-matching?token=${Cookies.get("token")}&jobId=${jobId}`
+    );
+
+    dispatch(aiResumeJDMatchingSuccess(data));
+  } catch (error) {
+    dispatch(aiResumeJDMatchingFail(error.response?.data?.message || "Failed to analyze resume-JD matching"));
+  }
+};
+
+export const getAIJobSummary = (jobId) => async (dispatch) => {
+  try {
+    dispatch(aiJobSummaryStart());
+
+    const { data } = await axios.post(
+      `/api/ai/job-summary?jobId=${jobId}`
+    );
+
+    dispatch(aiJobSummarySuccess(data));
+  } catch (error) {
+    dispatch(aiJobSummaryFail(error.response?.data?.message || "Failed to generate job summary"));
+  }
+};
+
+export const getAICoverLetter = (jobId, tone = "professional") => async (dispatch) => {
+  try {
+    dispatch(aiCoverLetterStart());
+
+    const { data } = await axios.post(
+      `/api/ai/cover-letter?token=${Cookies.get("token")}&jobId=${jobId}&tone=${tone}`
+    );
+
+    dispatch(aiCoverLetterSuccess(data));
+  } catch (error) {
+    dispatch(aiCoverLetterFail(error.response?.data?.message || "Failed to generate cover letter"));
+  }
+};
+
+export const getAIInterviewPrep = (jobId) => async (dispatch) => {
+  try {
+    dispatch(aiInterviewPrepStart());
+
+    const { data } = await axios.post(
+      `/api/ai/interview-prep?token=${Cookies.get("token")}&jobId=${jobId}`
+    );
+
+    dispatch(aiInterviewPrepSuccess(data));
+  } catch (error) {
+    dispatch(aiInterviewPrepFail(error.response?.data?.message || "Failed to generate interview preparation"));
   }
 };

@@ -24,9 +24,9 @@ export async function GET(req) {
       experience: {
         $lte: experience,
       },
-    }).sort("-createdAt");
+    }).populate('company').sort("-createdAt");
 
-    const topSix = await Job.find().limit(6).sort("-createdAt");
+    const topSix = await Job.find().populate('company').limit(6).sort("-createdAt");
 
     const locations = await Job.distinct("location");
 

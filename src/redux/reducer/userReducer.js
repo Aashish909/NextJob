@@ -3,12 +3,22 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   userProfile: null,
-  isAuth: true,
+  isAuth: false,
   savedJobs: null,
   loading: false,
   btnLoading: false,
   error: null,
   message: null,
+  aiFeedback: null,
+  aiFeedbackLoading: false,
+  aiResumeJDMatching: null,
+  aiResumeJDMatchingLoading: false,
+  aiJobSummary: null,
+  aiJobSummaryLoading: false,
+  aiCoverLetter: null,
+  aiCoverLetterLoading: false,
+  aiInterviewPrep: null,
+  aiInterviewPrepLoading: false,
 };
 
 const userSlice = createSlice({
@@ -128,6 +138,71 @@ const userSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    aiFeedbackStart: (state) => {
+      state.aiFeedbackLoading = true;
+      state.error = null;
+    },
+    aiFeedbackSuccess: (state, action) => {
+      state.aiFeedbackLoading = false;
+      state.aiFeedback = action.payload.feedback;
+      state.message = action.payload.message;
+    },
+    aiFeedbackFail: (state, action) => {
+      state.aiFeedbackLoading = false;
+      state.error = action.payload;
+    },
+    aiResumeJDMatchingStart: (state) => {
+      state.aiResumeJDMatchingLoading = true;
+      state.error = null;
+    },
+    aiResumeJDMatchingSuccess: (state, action) => {
+      state.aiResumeJDMatchingLoading = false;
+      state.aiResumeJDMatching = action.payload.analysis;
+      state.message = action.payload.message;
+    },
+    aiResumeJDMatchingFail: (state, action) => {
+      state.aiResumeJDMatchingLoading = false;
+      state.error = action.payload;
+    },
+    aiJobSummaryStart: (state) => {
+      state.aiJobSummaryLoading = true;
+      state.error = null;
+    },
+    aiJobSummarySuccess: (state, action) => {
+      state.aiJobSummaryLoading = false;
+      state.aiJobSummary = action.payload.summary;
+      state.message = action.payload.message;
+    },
+    aiJobSummaryFail: (state, action) => {
+      state.aiJobSummaryLoading = false;
+      state.error = action.payload;
+    },
+    aiCoverLetterStart: (state) => {
+      state.aiCoverLetterLoading = true;
+      state.error = null;
+    },
+    aiCoverLetterSuccess: (state, action) => {
+      state.aiCoverLetterLoading = false;
+      state.aiCoverLetter = action.payload.coverLetter;
+      state.message = action.payload.message;
+    },
+    aiCoverLetterFail: (state, action) => {
+      state.aiCoverLetterLoading = false;
+      state.error = action.payload;
+    },
+    aiInterviewPrepStart: (state) => {
+      state.aiInterviewPrepLoading = true;
+      state.error = null;
+    },
+    aiInterviewPrepSuccess: (state, action) => {
+      state.aiInterviewPrepLoading = false;
+      state.aiInterviewPrep = action.payload.interviewPrep;
+      state.message = action.payload.message;
+    },
+    aiInterviewPrepFail: (state, action) => {
+      state.aiInterviewPrepLoading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -159,6 +234,21 @@ export const {
   clearMessage,
   getUserProfileFail,
   getUserProfileSucces,
+  aiFeedbackStart,
+  aiFeedbackSuccess,
+  aiFeedbackFail,
+  aiResumeJDMatchingStart,
+  aiResumeJDMatchingSuccess,
+  aiResumeJDMatchingFail,
+  aiJobSummaryStart,
+  aiJobSummarySuccess,
+  aiJobSummaryFail,
+  aiCoverLetterStart,
+  aiCoverLetterSuccess,
+  aiCoverLetterFail,
+  aiInterviewPrepStart,
+  aiInterviewPrepSuccess,
+  aiInterviewPrepFail,
 } = userSlice.actions;
 
 export default userSlice.reducer;

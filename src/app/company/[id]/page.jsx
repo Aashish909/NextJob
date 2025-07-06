@@ -24,6 +24,7 @@ import {
 import { getSingleCompany } from "@/redux/action/company";
 import { AddJob, deleteJob } from "@/redux/action/job";
 import { DeleteIcon, Earth, Eye, Plus } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -43,7 +44,9 @@ const CompanyPage = () => {
   let companyJobs;
 
   if (jobs) {
-    companyJobs = jobs.filter((job) => job.company === id);
+    companyJobs = jobs.filter(
+      (job) => (job.company && job.company._id === id) || job.company === id
+    );
   }
 
   console.log(companyJobs);
@@ -107,11 +110,14 @@ const CompanyPage = () => {
           {company && (
             <>
               <div className="container px-5 pt-14 mx-auto flex flex-wrap flex-col">
-                <img
+                <Image
                   src={company.logo}
+                  alt="company logo"
                   className="xl:w-1/4 lg:w-1/3 md:w-1/2 w-2/3 block mx-auto mb-10 object-cover object-center rounded border border-black"
-                  alt=""
+                  width={500}
+                  height={500}
                 />
+               
 
                 <div className="flex flex-col text-center w-full">
                   <h1 className="text-xl font-medium mb-4">{company.name}</h1>
